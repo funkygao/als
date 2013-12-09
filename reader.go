@@ -53,3 +53,8 @@ func (this *alsReader) ReadLine() ([]byte, error) {
 
 	return buf, err
 }
+
+// Get time info from filename
+func (this *alsReader) LogfileTimeStr() string {
+	return LogfileTimeStr(this.filename)
+}

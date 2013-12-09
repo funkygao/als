@@ -3,6 +3,7 @@ package als
 import (
 	"errors"
 	json "github.com/bitly/go-simplejson"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -39,4 +40,10 @@ func MsgToJson(msg string) (data *json.Json, err error) {
 	data, err = json.NewJson([]byte(msg))
 
 	return
+}
+
+// Extract time info from als filename
+func LogfileTimeStr(filename string) string {
+	fields := strings.Split(filepath.Base(filename), "_")
+	return fields[len(fields)-2]
 }
