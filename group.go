@@ -5,14 +5,22 @@ import (
 )
 
 func GroupedLevel(level int) string {
-	prev, current := 1, 1
-	for _, lv := range GROUP_LEVELS {
-		if lv >= level {
-			current = lv
+	return groupInts(level, GROUP_LEVELS)
+}
+
+func GroupedXP(xp int) string {
+	return groupInts(xp, GROUP_XP)
+}
+
+func groupInts(i int, groups []int) string {
+	prev, current := 0, 0
+	for _, v := range groups {
+		if v >= i {
+			current = v
 			break
 		}
 
-		prev = lv
+		prev = v
 	}
 
 	return fmt.Sprintf("%d-%d", prev, current)
