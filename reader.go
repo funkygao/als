@@ -58,3 +58,18 @@ func (this *alsReader) ReadLine() ([]byte, error) {
 func (this *alsReader) LogfileTimeStr() string {
 	return LogfileTimeStr(this.filename)
 }
+
+func (this *alsReader) LogfileMonth() string {
+	ts := this.LogfileTimeStr()
+	return ts[4:6]
+}
+
+func (this *alsReader) LogfileYear() string {
+	ts := this.LogfileTimeStr()
+	return ts[:4]
+}
+
+func (this *alsReader) LogfileYearMonth() string {
+	ts := this.LogfileTimeStr()
+	return ts[:6]
+}
