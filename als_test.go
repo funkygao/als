@@ -35,3 +35,8 @@ func TestGroupLevel(t *testing.T) {
 
 	// level=1022 will return "1000-1", bad, but we'll skip this assertion
 }
+
+func TestIntsGroupLabel(t *testing.T) {
+	var n = []int{1, 4, 9, 100}
+	assert.Equal(t, []string{"1-4", "4-9", "9-100"}, intsGroupLabels(n))
+}
