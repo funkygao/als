@@ -73,3 +73,9 @@ func (this *alsReader) LogfileYearMonth() string {
 	ts := this.LogfileTimeStr()
 	return ts[:6]
 }
+
+func (this *alsReader) LogfileYearMonthDate() string {
+	ts := this.LogfileTimeStr()
+	return ts[:8]
+}
+

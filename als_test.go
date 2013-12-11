@@ -18,6 +18,7 @@ func TestLogfileMonth(t *testing.T) {
 	assert.Equal(t, "12", reader.LogfileMonth())
 	assert.Equal(t, "2013", reader.LogfileYear())
 	assert.Equal(t, "201312", reader.LogfileYearMonth())
+	assert.Equal(t, "20131208", reader.LogfileYearMonthDate())
 }
 
 func TestGroupLevel(t *testing.T) {
