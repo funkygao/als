@@ -38,7 +38,7 @@ func intsGroupLabels(group []int) []string {
 }
 
 func GroupInt(i int, groups []int) string {
-	prev, current := 0, 0
+	prev, current := -100, -100
 	for _, v := range groups {
 		if v >= i {
 			current = v
@@ -47,6 +47,10 @@ func GroupInt(i int, groups []int) string {
 
 		prev = v
 	}
+
+    if prev == -100 || current == -100 {
+        return ""
+    }
 
 	return fmt.Sprintf("%d-%d", prev, current)
 }

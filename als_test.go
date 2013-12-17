@@ -49,3 +49,12 @@ func TestNamedRegexp(t *testing.T) {
 	assert.Equal(t, "1234", m["first"])
 	assert.Equal(t, "9", m["second"])
 }
+
+func TestGroupInt(t *testing.T) {
+        var ranges = []int{1, 10, 30}
+        assert.Equal(t, "1-10", GroupInt(1, ranges))
+        assert.Equal(t, "1-10", GroupInt(2, ranges))
+        assert.Equal(t, "1-10", GroupInt(10, ranges))
+        assert.Equal(t, "", GroupInt(40, ranges))
+        assert.Equal(t, "", GroupInt(0, ranges))
+}
