@@ -5,15 +5,15 @@ import (
 )
 
 func GroupedLevel(level int) string {
-	return groupInts(level, GROUP_LEVELS)
+	return GroupInt(level, GROUP_LEVELS)
 }
 
 func GroupedXP(xp int) string {
-	return groupInts(xp, GROUP_XP)
+	return GroupInt(xp, GROUP_XP)
 }
 
 func GroupedSessionLen(sessionLen int) string {
-	return groupInts(sessionLen, GROUP_SESSIONLEN)
+	return GroupInt(sessionLen, GROUP_SESSIONLEN)
 }
 
 func LevelLabels() []string {
@@ -37,7 +37,7 @@ func intsGroupLabels(group []int) []string {
 
 }
 
-func groupInts(i int, groups []int) string {
+func GroupInt(i int, groups []int) string {
 	prev, current := 0, 0
 	for _, v := range groups {
 		if v >= i {
@@ -50,3 +50,4 @@ func groupInts(i int, groups []int) string {
 
 	return fmt.Sprintf("%d-%d", prev, current)
 }
+
