@@ -2,6 +2,7 @@ package als
 
 import (
 	"github.com/bmizerany/assert"
+	"regexp"
 	"testing"
 )
 
@@ -40,4 +41,11 @@ func TestGroupLevel(t *testing.T) {
 func TestIntsGroupLabel(t *testing.T) {
 	var n = []int{1, 4, 9, 100}
 	assert.Equal(t, []string{"1-4", "4-9", "9-100"}, intsGroupLabels(n))
+}
+
+func TestNamedRegexp(t *testing.T) {
+	var myExp = NamedRegexp{regexp.MustCompile(`(?P<first>\d+)\.(\d+).(?P<second>\d+)`)}
+	m := myExp.FindStringSubmatchMap("1234.5678.9")
+	assert.Equal(t, "1234", m["first"])
+	assert.Equal(t, "9", m["second"])
 }
