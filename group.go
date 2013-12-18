@@ -37,21 +37,29 @@ func intsGroupLabels(group []int) []string {
 
 }
 
-func GroupInt(i int, groups []int) string {
-	prev, current := -100, -100
-	for _, v := range groups {
-		if v >= i {
-			current = v
+// [x, y)
+func GroupInt(val int, groups []int) string {
+	const (
+		INVALID_LEFT    = -109
+		INVALID_CURRENT = -107
+	)
+	if len(groups) <= 2 {
+		return ""
+	}
+
+	left, current := INVALID_LEFT, INVALID_CURRENT
+	for _, needle := range groups {
+		if val < needle {
+			current = needle
 			break
 		}
 
-		prev = v
+		left = needle
 	}
 
-    if prev == -100 || current == -100 {
-        return ""
-    }
+	if left == INVALID_LEFT || current == INVALID_CURRENT {
+		return ""
+	}
 
-	return fmt.Sprintf("%d-%d", prev, current)
+	return fmt.Sprintf("%d-%d", left, current)
 }
-

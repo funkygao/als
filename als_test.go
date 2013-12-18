@@ -26,7 +26,7 @@ func TestGroupLevel(t *testing.T) {
 	level := 5
 	assert.Equal(t, "1-10", GroupedLevel(level))
 
-	level = 10
+	level = 9
 	assert.Equal(t, "1-10", GroupedLevel(level))
 
 	level = 56
@@ -51,10 +51,10 @@ func TestNamedRegexp(t *testing.T) {
 }
 
 func TestGroupInt(t *testing.T) {
-        var ranges = []int{1, 10, 30}
-        assert.Equal(t, "1-10", GroupInt(1, ranges))
-        assert.Equal(t, "1-10", GroupInt(2, ranges))
-        assert.Equal(t, "1-10", GroupInt(10, ranges))
-        assert.Equal(t, "", GroupInt(40, ranges))
-        assert.Equal(t, "", GroupInt(0, ranges))
+	var ranges = []int{1, 10, 30}
+	assert.Equal(t, "1-10", GroupInt(1, ranges))
+	assert.Equal(t, "1-10", GroupInt(2, ranges))
+	assert.Equal(t, "10-30", GroupInt(10, ranges))
+	assert.Equal(t, "", GroupInt(40, ranges))
+	assert.Equal(t, "", GroupInt(0, ranges))
 }
