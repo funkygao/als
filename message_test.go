@@ -16,6 +16,7 @@ func TestNewMessage(t *testing.T) {
 	assert.Equal(t, nil, err)
 	uri, _ := json.Get("uri").String()
 	assert.Equal(t, "/?fb_source=canvas_bookmark", uri)
+
 	loginfo := json.Get("_log_info")
 	ip, _ := loginfo.Get("ip").String()
 	assert.Equal(t, "209.202.60.244", ip)
