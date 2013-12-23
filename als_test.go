@@ -22,25 +22,9 @@ func TestLogfileMonth(t *testing.T) {
 	assert.Equal(t, "20131208", reader.LogfileYearMonthDate())
 }
 
-func TestGroupLevel(t *testing.T) {
-	level := 5
-	assert.Equal(t, "1-10", GroupedLevel(level))
-
-	level = 9
-	assert.Equal(t, "1-10", GroupedLevel(level))
-
-	level = 56
-	assert.Equal(t, "50-60", GroupedLevel(level))
-
-	level = 102
-	assert.Equal(t, "100-1000", GroupedLevel(level))
-
-	// level=1022 will return "1000-1", bad, but we'll skip this assertion
-}
-
 func TestIntsGroupLabel(t *testing.T) {
 	var n = []int{1, 4, 9, 100}
-	assert.Equal(t, []string{"1-4", "4-9", "9-100"}, intsGroupLabels(n))
+	assert.Equal(t, []string{"1-4", "4-9", "9-100"}, GroupIntLabels(n))
 }
 
 func TestNamedRegexp(t *testing.T) {

@@ -4,27 +4,7 @@ import (
 	"fmt"
 )
 
-func GroupedLevel(level int) string {
-	return GroupInt(level, GROUP_LEVELS)
-}
-
-func GroupedXP(xp int) string {
-	return GroupInt(xp, GROUP_XP)
-}
-
-func GroupedSessionLen(sessionLen int) string {
-	return GroupInt(sessionLen, GROUP_SESSIONLEN)
-}
-
-func LevelLabels() []string {
-	return intsGroupLabels(GROUP_LEVELS)
-}
-
-func SessionLenLabels() []string {
-	return intsGroupLabels(GROUP_SESSIONLEN)
-}
-
-func intsGroupLabels(group []int) []string {
+func GroupIntLabels(group []int) []string {
 	ret := make([]string, 0)
 	n := len(group)
 	for idx, val := range group {
@@ -33,8 +13,8 @@ func intsGroupLabels(group []int) []string {
 		}
 		ret = append(ret, fmt.Sprintf("%d-%d", val, group[idx+1]))
 	}
-	return ret
 
+	return ret
 }
 
 // [x, y)
@@ -63,3 +43,4 @@ func GroupInt(val int, groups []int) string {
 
 	return fmt.Sprintf("%d-%d", left, current)
 }
+
