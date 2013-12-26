@@ -14,12 +14,12 @@ func LoadGeoDb(geodbfile string) (err error) {
 	return
 }
 
-func geoEnabled() bool {
+func GeoEnabled() bool {
 	return geo != nil
 }
 
 func IpToGeoPoint(ip string) (gp GeoPoint) {
-	if !geoEnabled() {
+	if !GeoEnabled() {
 		panic("must LoadGeoDb before IpToGeoPoint")
 	}
 
@@ -32,7 +32,7 @@ func IpToGeoPoint(ip string) (gp GeoPoint) {
 
 // Return 2 letter country name, e,g. US
 func IpToCountry(ip string) string {
-	if !geoEnabled() {
+	if !GeoEnabled() {
 		panic("must LoadGeoDb before IpToCountry")
 	}
 
