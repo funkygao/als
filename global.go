@@ -1,6 +1,12 @@
 package als
 
+import (
+	"github.com/abh/geoip"
+)
+
 var (
+	geo *geoip.GeoIP
+
 	CURRENCY_TABLE = map[string]float32{
 		"IDR": 0.00009,
 		"VND": 0.000047,
@@ -57,4 +63,3 @@ var (
 		"BgWhite":   "\x1b[47m",
 	}
 )
-
