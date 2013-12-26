@@ -15,10 +15,10 @@ const (
 
 func ParseAlsLine(line string) (area string, ts uint64, msg string, err error) {
 	fields := strings.SplitN(line, LINE_SPLITTER, LINE_SPLIT_NUM)
-    if len(fields) != LINE_SPLIT_NUM {
-        err = errors.New("not enough fields: " + line)
-        return
-    }
+	if len(fields) != LINE_SPLIT_NUM {
+		err = errors.New("not enough fields: " + line)
+		return
+	}
 
 	area = fields[0]
 	if area == "" {
