@@ -11,6 +11,7 @@ func GroupIntLabels(group []int) []string {
 		if idx == n-1 {
 			break
 		}
+
 		ret = append(ret, fmt.Sprintf("%d-%d", val, group[idx+1]))
 	}
 
@@ -43,4 +44,3 @@ func GroupInt(val int, groups []int) string {
 
 	return fmt.Sprintf("%d-%d", left, current)
 }
-

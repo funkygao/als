@@ -27,5 +27,6 @@ func (this *NamedRegexp) FindStringSubmatchMap(s string) map[string]string {
 		captures[name] = match[i]
 
 	}
+
 	return captures
 }

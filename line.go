@@ -2,8 +2,6 @@ package als
 
 import (
 	"errors"
-	json "github.com/bitly/go-simplejson"
-	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -13,7 +11,7 @@ const (
 	LINE_SPLIT_NUM = 3
 )
 
-func ParseAlsLine(line string) (area string, ts uint64, msg string, err error) {
+func parseAlsLine(line string) (area string, ts uint64, msg string, err error) {
 	fields := strings.SplitN(line, LINE_SPLITTER, LINE_SPLIT_NUM)
 	if len(fields) != LINE_SPLIT_NUM {
 		err = errors.New("not enough fields: " + line)
@@ -39,16 +37,4 @@ func ParseAlsLine(line string) (area string, ts uint64, msg string, err error) {
 
 	msg = fields[2]
 	return
-}
-
-func MsgToJson(msg string) (data *json.Json, err error) {
-	data, err = json.NewJson([]byte(msg))
-
-	return
-}
-
-// Extract time info from als filename
-func LogfileTimeStr(filename string) string {
-	fields := strings.Split(filepath.Base(filename), "_")
-	return fields[len(fields)-2]
 }

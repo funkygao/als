@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"errors"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 type alsReader struct {
@@ -20,7 +22,7 @@ func NewAlsReader(filename string) (this *alsReader) {
 }
 
 func (this *alsReader) Close() (err error) {
-	if this.reader == nil {
+	if this.stream == nil {
 		err = errors.New("must call Start before Close")
 		return
 	}
@@ -56,7 +58,8 @@ func (this *alsReader) ReadLine() ([]byte, error) {
 
 // Get time info from filename
 func (this *alsReader) LogfileTimeStr() string {
-	return LogfileTimeStr(this.filename)
+	fields := strings.Split(filepath.Base(this.filename), "_")
+	return fields[len(fields)-2]
 }
 
 func (this *alsReader) LogfileMonth() string {
@@ -78,4 +81,3 @@ func (this *alsReader) LogfileYearMonthDate() string {
 	ts := this.LogfileTimeStr()
 	return ts[:8]
 }
-
