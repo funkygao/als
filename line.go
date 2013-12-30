@@ -6,14 +6,14 @@ import (
 	"strings"
 )
 
-const (
-	LINE_SPLITTER  = ","
-	LINE_SPLIT_NUM = 3
-)
-
 func parseAlsLine(line string) (area string, ts uint64, msg string, err error) {
-	fields := strings.SplitN(line, LINE_SPLITTER, LINE_SPLIT_NUM)
-	if len(fields) != LINE_SPLIT_NUM {
+	const (
+		field_splitter  = ","
+		field_split_num = 3
+	)
+
+	fields := strings.SplitN(line, field_splitter, field_split_num)
+	if len(fields) != field_split_num {
 		err = errors.New("not enough fields: " + line)
 		return
 	}
