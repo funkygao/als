@@ -58,3 +58,18 @@ func (this *AlsMessage) MarshalPayload() ([]byte, error) {
 func (this *AlsMessage) Time() time.Time {
 	return time.Unix(int64(this.Timestamp), 0)
 }
+
+func (this *AlsMessage) Year() (year int) {
+	year, _, _ = this.Time().Date()
+	return
+}
+
+func (this *AlsMessage) Month() (month int) {
+	_, m, _ := this.Time().Date()
+	return int(m)
+}
+
+func (this *AlsMessage) Day() (day int) {
+	_, _, day = this.Time().Date()
+	return day
+}
