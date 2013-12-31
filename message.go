@@ -13,13 +13,30 @@ type AlsMessage struct {
 }
 
 // Convert text line to AlsMessage
-func NewAlsMessage(line string) (*AlsMessage, error) {
+func NewAlsMessage() *AlsMessage {
+	this := new(AlsMessage)
+	this.Reset()
+	return this
+}
+
+func (this *AlsMessage) Reset() {
+	this.Area = ""
+	this.Ts = 0
+	this.Priority = 0
+	this.Payload = ""
+}
+
+func (this *AlsMessage) ParseLine(line string) error {
 	area, ts, payload, err := parseAlsLine(line)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &AlsMessage{Area: area, Ts: ts, Payload: payload}, nil
+	this.Area = area
+	this.Ts = ts
+	this.Payload = payload
+
+	return nil
 }
 
 func (this *AlsMessage) PayloadJson() (data *json.Json, err error) {
