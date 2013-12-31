@@ -8,7 +8,7 @@ import (
 func prepareMsgForTest() *AlsMessage {
 	line := `us,1387789257065,{"uri":"\/?fb_source=canvas_bookmark","_log_info":{"uid":8664420,"snsid":"100005855171890","level":29,"gender":"female","ab":"a","payment_cash":197,"script_id":2324196651,"serial":1,"uri":"\/","host":"172.31.1.244","ip":"209.202.60.244","callee":"POST+\/+24c55bb0","sid":null}}`
 	msg := NewAlsMessage()
-	msg.ParseLine(line)
+	msg.FromLine(line)
 	return msg
 }
 

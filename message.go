@@ -6,10 +6,12 @@ import (
 )
 
 type AlsMessage struct {
-	Area      string
-	Timestamp uint64 // timestamp in UTC
-	Payload   string // raw msg content, should be json string
-	Priority  int    // set by app
+	Area string
+	// timestamp in UTC
+	Timestamp uint64
+	// Textual msg/json content
+	Payload  string
+	Priority int
 }
 
 // Convert text line to AlsMessage
@@ -26,7 +28,7 @@ func (this *AlsMessage) Reset() {
 	this.Payload = ""
 }
 
-func (this *AlsMessage) ParseLine(line string) error {
+func (this *AlsMessage) FromLine(line string) error {
 	area, timestamp, payload, err := parseAlsLine(line)
 	if err != nil {
 		return err
@@ -36,6 +38,11 @@ func (this *AlsMessage) ParseLine(line string) error {
 	this.Timestamp = timestamp
 	this.Payload = payload
 
+	return nil
+}
+
+// TODO
+func (this *AlsMessage) FromBytes(bytes []byte) error {
 	return nil
 }
 
