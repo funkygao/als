@@ -13,7 +13,7 @@ func TestAlsMessage(t *testing.T) {
 	assert.Equal(t, nil, err)
 	assert.Equal(t, "us", msg.Area)
 	assert.Equal(t, 5, msg.Priority)
-	assert.Equal(t, uint64(1387789257065/1000), msg.Ts)
+	assert.Equal(t, uint64(1387789257065/1000), msg.Timestamp)
 
 	year, month, day := msg.Time().Date()
 	assert.Equal(t, 2013, year)
