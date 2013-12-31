@@ -69,3 +69,13 @@ func TestGetAttr(t *testing.T) {
 	assert.Equal(t, "shit", GetAttr(bar, "non-exist", "shit"))
 	assert.Equal(t, 32, GetAttr(bar, "Age", -1))
 }
+
+func TestMoneyInUsd(t *testing.T) {
+	usd, _ := MoneyInUsd("CAD", 1.2)
+	assert.Equal(t, 1.164, usd)
+}
+
+func TestColorize(t *testing.T) {
+	assert.Equal(t, "\x1b[30m\x1b[41mhello\x1b[0m",
+		Colorize([]string{"FgBlack", "BgRed"}, "hello"))
+}

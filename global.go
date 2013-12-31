@@ -7,7 +7,7 @@ import (
 var (
 	geo *geoip.GeoIP
 
-	CURRENCY_TABLE = map[string]float32{
+	currency_table = map[string]float64{
 		"IDR": 0.00009,
 		"VND": 0.000047,
 		"NZD": 0.84,
@@ -33,7 +33,7 @@ var (
 		"USD": 1.0,
 	}
 
-	COLOR_MAP = map[string]string{
+	color_table = map[string]string{
 		// e,g. FgBlack + Blink + BgGreen + "hello" + Reset
 		"Reset": "\x1b[0m",
 
