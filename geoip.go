@@ -1,7 +1,7 @@
 package als
 
 import (
-	"github.com/abh/geoip"
+	"github.com/funkygao/geoip"
 )
 
 type GeoPoint struct {
