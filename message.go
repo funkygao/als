@@ -42,6 +42,7 @@ func (this *AlsMessage) FromLine(line string) error {
 	return nil
 }
 
+// Timestamp will be partitially lost if in ms
 func (this *AlsMessage) RawLine() string {
 	return fmt.Sprintf("%s,%d,%s", this.Area, this.Timestamp, this.Payload)
 }
