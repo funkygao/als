@@ -1,6 +1,7 @@
 package als
 
 import (
+	"fmt"
 	json "github.com/bitly/go-simplejson"
 	"time"
 )
@@ -39,6 +40,10 @@ func (this *AlsMessage) FromLine(line string) error {
 	this.Payload = payload
 
 	return nil
+}
+
+func (this *AlsMessage) RawLine() string {
+	return fmt.Sprintf("%s,%d,%s", this.Area, this.Timestamp, this.Payload)
 }
 
 // TODO
