@@ -8,52 +8,52 @@ import (
 
 // in-flight: mongo_slow.0.log
 // history: mongo_slow_20140103060105_0
-type alsLogfile struct {
+type AlsLogfile struct {
 	path string // absolute path for a single file
 	r    NamedRegexp
 }
 
-func NewAlsLogfile() (this *alsLogfile) {
-	this = new(alsLogfile)
+func NewAlsLogfile() (this *AlsLogfile) {
+	this = new(AlsLogfile)
 	this.r = NamedRegexp{regexp.MustCompile(`(?P<bn>.+)\.(\d+).\.log`)}
 	return
 }
 
-func (this *alsLogfile) SetPath(path string) {
+func (this *AlsLogfile) SetPath(path string) {
 	this.path = path
 }
 
-func (this *alsLogfile) Base() string {
+func (this *AlsLogfile) Base() string {
 	return filepath.Base(this.path)
 }
 
-func (this *alsLogfile) BizName() string {
+func (this *AlsLogfile) BizName() string {
 	m := this.r.FindStringSubmatchMap(this.Base())
 	return CamelCase(m["bn"])
 }
 
 // Get time info from filename
-func (this *alsLogfile) LogfileTimeStr() string {
+func (this *AlsLogfile) LogfileTimeStr() string {
 	fields := strings.Split(filepath.Base(this.path), "_")
 	return fields[len(fields)-2]
 }
 
-func (this *alsLogfile) LogfileMonth() string {
+func (this *AlsLogfile) LogfileMonth() string {
 	ts := this.LogfileTimeStr()
 	return ts[4:6]
 }
 
-func (this *alsLogfile) LogfileYear() string {
+func (this *AlsLogfile) LogfileYear() string {
 	ts := this.LogfileTimeStr()
 	return ts[:4]
 }
 
-func (this *alsLogfile) LogfileYearMonth() string {
+func (this *AlsLogfile) LogfileYearMonth() string {
 	ts := this.LogfileTimeStr()
 	return ts[:6]
 }
 
-func (this *alsLogfile) LogfileYearMonthDate() string {
+func (this *AlsLogfile) LogfileYearMonthDate() string {
 	ts := this.LogfileTimeStr()
 	return ts[:8]
 }

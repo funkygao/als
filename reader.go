@@ -7,7 +7,7 @@ import (
 )
 
 type alsReader struct {
-	*alsLogfile
+	*AlsLogfile
 
 	stream *os.File
 	reader *bufio.Reader
@@ -15,8 +15,8 @@ type alsReader struct {
 
 func NewAlsReader(path string) (this *alsReader) {
 	this = new(alsReader)
-	this.alsLogfile = NewAlsLogfile()
-	this.alsLogfile.SetPath(path)
+	this.AlsLogfile = NewAlsLogfile()
+	this.AlsLogfile.SetPath(path)
 
 	return
 }
