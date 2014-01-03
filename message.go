@@ -15,7 +15,7 @@ type AlsMessage struct {
 	Payload  string
 	Priority int8
 
-	Decoded     bool
+	decoded     bool
 	payloadJson *json.Json
 }
 
@@ -30,7 +30,7 @@ func (this *AlsMessage) Reset() {
 	this.Area = ""
 	this.Timestamp = 0
 	this.Priority = int8(0)
-	this.Decoded = false
+	this.decoded = false
 	this.Payload = ""
 	this.payloadJson = nil
 }
@@ -59,13 +59,13 @@ func (this *AlsMessage) FromBytes(bytes []byte) error {
 }
 
 func (this *AlsMessage) PayloadJson() (data *json.Json, err error) {
-	if this.Decoded {
+	if this.decoded {
 		return this.payloadJson, nil
 	}
 
 	data, err = json.NewJson([]byte(this.Payload))
 	this.payloadJson = data
-	this.Decoded = true
+	this.decoded = true
 
 	return
 }

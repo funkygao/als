@@ -11,6 +11,7 @@ const (
 	KEY_TYPE_INT      = "int"
 	KEY_TYPE_MONEY    = "money"
 	KEY_TYPE_LEVEL    = "level"
+	KEY_TYPE_RANGE    = "range"
 	KEY_TYPE_BASEFILE = "base_file"
 
 	KEY_NAME_CURRENCY = "currency"
