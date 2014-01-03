@@ -1,25 +1,36 @@
 package als
 
 import (
-	"github.com/bmizerany/assert"
+	"github.com/funkygao/assert"
 	"regexp"
 	"testing"
 )
 
 func TestLogfileTimeStr(t *testing.T) {
-	reader := NewAlsReader("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")
-	assert.Equal(t, "20131208230103", reader.LogfileTimeStr())
+	logfile := NewAlsLogfile()
+	logfile.SetPath("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")
+	assert.Equal(t, "20131208230103", logfile.LogfileTimeStr())
 
-	reader = NewAlsReader("/mnt/funplus/logs/fp_rstory/history/session_foo_20131208230103_1")
-	assert.Equal(t, "20131208230103", reader.LogfileTimeStr())
+	logfile.SetPath("/mnt/funplus/logs/fp_rstory/history/session_foo_20131208230103_1")
+	assert.Equal(t, "20131208230103", logfile.LogfileTimeStr())
 }
 
 func TestLogfileMonth(t *testing.T) {
-	reader := NewAlsReader("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")
-	assert.Equal(t, "12", reader.LogfileMonth())
-	assert.Equal(t, "2013", reader.LogfileYear())
-	assert.Equal(t, "201312", reader.LogfileYearMonth())
-	assert.Equal(t, "20131208", reader.LogfileYearMonthDate())
+	logfile := NewAlsLogfile()
+	logfile.SetPath("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")
+	assert.Equal(t, "12", logfile.LogfileMonth())
+	assert.Equal(t, "2013", logfile.LogfileYear())
+	assert.Equal(t, "201312", logfile.LogfileYearMonth())
+	assert.Equal(t, "20131208", logfile.LogfileYearMonthDate())
+}
+
+func TestLogfileBizName(t *testing.T) {
+	logfile := NewAlsLogfile()
+	logfile.SetPath("/var/bi_first_payment.10.log")
+	assert.Equal(t, "biFirstPayment", logfile.BizName())
+
+	logfile.SetPath("/var/ffs.client.Error.11.log")
+	assert.Equal(t, "ffsClientError", logfile.BizName())
 }
 
 func TestIntsGroupLabel(t *testing.T) {
