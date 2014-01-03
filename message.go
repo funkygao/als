@@ -82,15 +82,15 @@ func (this *AlsMessage) FieldValue(keyName string, keyType string) (val interfac
 		val, err = this.payloadJson.DeepGet(keyName).String()
 	case KEY_TYPE_FLOAT:
 		val, err = this.payloadJson.DeepGet(keyName).Float64()
-	case KEY_TYPE_INT, KEY_TYPE_MONEY, KEY_TYPE_LEVEL:
+	case KEY_TYPE_INT, KEY_TYPE_MONEY, KEY_TYPE_LEVEL, KEY_TYPE_RANGE:
 		val, err = this.payloadJson.DeepGet(keyName).Int()
 	case KEY_TYPE_BASEFILE:
-		var fullFilename string
-		fullFilename, err = this.payloadJson.DeepGet(keyName).String()
+		var absoluteFilename string
+		absoluteFilename, err = this.payloadJson.DeepGet(keyName).String()
 		if err != nil {
 			return
 		}
-		val = filepath.Base(fullFilename)
+		val = filepath.Base(absoluteFilename)
 	default:
 		panic("invalid key type: " + keyType)
 	}
