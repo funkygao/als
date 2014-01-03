@@ -67,7 +67,7 @@ func (this *AlsMessage) PayloadJson() (data *json.Json, err error) {
 	this.payloadJson = data
 	this.decoded = true
 
-	return
+	return nil, err
 }
 
 // Payload field value by key name and key type
