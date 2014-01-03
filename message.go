@@ -2,7 +2,8 @@ package als
 
 import (
 	"fmt"
-	json "github.com/bitly/go-simplejson"
+	json "github.com/funkygao/go-simplejson"
+	"path/filepath"
 	"time"
 )
 
@@ -12,7 +13,10 @@ type AlsMessage struct {
 	Timestamp uint64
 	// Textual msg/json content
 	Payload  string
-	Priority int
+	Priority int8
+
+	Decoded     bool
+	payloadJson *json.Json
 }
 
 // Convert text line to AlsMessage
@@ -25,8 +29,10 @@ func NewAlsMessage() *AlsMessage {
 func (this *AlsMessage) Reset() {
 	this.Area = ""
 	this.Timestamp = 0
-	this.Priority = 0
+	this.Priority = int8(0)
+	this.Decoded = false
 	this.Payload = ""
+	this.payloadJson = nil
 }
 
 func (this *AlsMessage) FromLine(line string) error {
@@ -53,7 +59,41 @@ func (this *AlsMessage) FromBytes(bytes []byte) error {
 }
 
 func (this *AlsMessage) PayloadJson() (data *json.Json, err error) {
+	if this.Decoded {
+		return this.payloadJson, nil
+	}
+
 	data, err = json.NewJson([]byte(this.Payload))
+	this.payloadJson = data
+	this.Decoded = true
+
+	return
+}
+
+// Payload field value by key name and key type
+func (this *AlsMessage) FieldValue(keyName string, keyType string) (val interface{}, err error) {
+	_, err = this.PayloadJson()
+	if err != nil {
+		return
+	}
+
+	switch keyType {
+	case KEY_TYPE_STRING, KEY_TYPE_IP:
+		val, err = this.payloadJson.DeepGet(keyName).String()
+	case KEY_TYPE_FLOAT:
+		val, err = this.payloadJson.DeepGet(keyName).Float64()
+	case KEY_TYPE_INT, KEY_TYPE_MONEY, KEY_TYPE_LEVEL:
+		val, err = this.payloadJson.DeepGet(keyName).Int()
+	case KEY_TYPE_BASEFILE:
+		var fullFilename string
+		fullFilename, err = this.payloadJson.DeepGet(keyName).String()
+		if err != nil {
+			return
+		}
+		val = filepath.Base(fullFilename)
+	default:
+		panic("invalid key type: " + keyType)
+	}
 
 	return
 }

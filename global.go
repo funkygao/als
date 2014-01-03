@@ -4,6 +4,20 @@ import (
 	"github.com/abh/geoip"
 )
 
+const (
+	KEY_TYPE_STRING   = "string" // default type
+	KEY_TYPE_IP       = "ip"
+	KEY_TYPE_FLOAT    = "float"
+	KEY_TYPE_INT      = "int"
+	KEY_TYPE_MONEY    = "money"
+	KEY_TYPE_LEVEL    = "level"
+	KEY_TYPE_BASEFILE = "base_file"
+
+	KEY_NAME_CURRENCY = "currency"
+	KEY_NAME_TYPE     = "typ"
+	KEY_NAME_IP       = "ip"
+)
+
 var (
 	geo *geoip.GeoIP
 

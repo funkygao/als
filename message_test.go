@@ -1,12 +1,13 @@
 package als
 
 import (
-	"github.com/bmizerany/assert"
+	"github.com/funkygao/assert"
+	"github.com/funkygao/pretty"
 	"testing"
 )
 
 func prepareMsgForTest() *AlsMessage {
-	line := `us,1387789257065,{"uri":"\/?fb_source=canvas_bookmark","_log_info":{"uid":8664420,"snsid":"100005855171890","level":29,"gender":"female","ab":"a","payment_cash":197,"script_id":2324196651,"serial":1,"uri":"\/","host":"172.31.1.244","ip":"209.202.60.244","callee":"POST+\/+24c55bb0","sid":null}}`
+	line := `us,1387789257065,{"uri":"\/?fb_source=canvas_bookmark","_log_info":{"uid":8664420,"snsid":"100005855171890","level":29,"gender":"female","ab":"a","payment_cash":197,"script_id":2324196651,"serial":1,"uri":"\/","host":"172.31.1.244","ip":"209.202.60.244","callee":"POST+\/+24c55bb0","sid":null, "logfile": "/var/log/a.log"}}`
 	msg := NewAlsMessage()
 	msg.FromLine(line)
 	return msg
@@ -14,10 +15,24 @@ func prepareMsgForTest() *AlsMessage {
 
 func TestAlsMessageBasic(t *testing.T) {
 	msg := prepareMsgForTest()
-	msg.Priority = 5
+	msg.Priority = int8(5)
 	assert.Equal(t, "us", msg.Area)
-	assert.Equal(t, 5, msg.Priority)
+	assert.Equal(t, int8(5), msg.Priority)
 	assert.Equal(t, uint64(1387789257065/1000), msg.Timestamp)
+}
+
+func TestAlsMessageFieldValue(t *testing.T) {
+	msg := prepareMsgForTest()
+	ip, err := msg.FieldValue("_log_info.ip", KEY_TYPE_IP)
+	if false {
+		pretty.Printf("%# v\n", *msg.payloadJson)
+	}
+
+	assert.Equal(t, nil, err)
+	assert.Equal(t, "209.202.60.244", ip.(string))
+
+	logfile, _ := msg.FieldValue("_log_info.logfile", KEY_TYPE_BASEFILE)
+	assert.Equal(t, "a.log", logfile.(string))
 }
 
 func TestAlsMessageTime(t *testing.T) {
@@ -42,9 +57,4 @@ func TestAlsMessageJson(t *testing.T) {
 	loginfo := json.Get("_log_info")
 	ip, _ := loginfo.Get("ip").String()
 	assert.Equal(t, "209.202.60.244", ip)
-}
-
-func TestAlsMessageRawLine(t *testing.T) {
-	msg := prepareMsgForTest()
-	assert.Equal(t, `us,1387789257,{"uri":"\/?fb_source=canvas_bookmark","_log_info":{"uid":8664420,"snsid":"100005855171890","level":29,"gender":"female","ab":"a","payment_cash":197,"script_id":2324196651,"serial":1,"uri":"\/","host":"172.31.1.244","ip":"209.202.60.244","callee":"POST+\/+24c55bb0","sid":null}}`, msg.RawLine())
 }
