@@ -1,16 +1,14 @@
 package als
 
-import (
-	"errors"
-)
-
-func MoneyInUsd(currency string, amount float64) (usd float64, err error) {
-	var ok bool
-	usd, ok = currency_table[currency]
+// In dollar instead of cent
+func MoneyInUsd(currency string, amount int) (usd int) {
+	rates, ok := currency_table[currency]
 	if !ok {
-		err = errors.New("invalid currency")
+		panic("invalid currency: " + currency)
 	}
 
-	usd *= amount
+	cents := rates * float64(amount)
+	usd = int(cents) / 100
+
 	return
 }
