@@ -27,10 +27,13 @@ func TestLogfileMonth(t *testing.T) {
 func TestLogfileBizName(t *testing.T) {
 	logfile := NewAlsLogfile()
 	logfile.SetPath("/var/bi_first_payment.10.log")
-	assert.Equal(t, "biFirstPayment", logfile.BizName())
+	assert.Equal(t, "biFirstPayment", logfile.CamalCaseName())
 
 	logfile.SetPath("/var/ffs.client.Error.11.log")
-	assert.Equal(t, "ffsClientError", logfile.BizName())
+	assert.Equal(t, "ffsClientError", logfile.CamalCaseName())
+
+	logfile.SetPath("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")
+	assert.Equal(t, "", logfile.CamalCaseName())
 }
 
 func TestIntsGroupLabel(t *testing.T) {

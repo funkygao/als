@@ -27,7 +27,7 @@ func (this *AlsLogfile) Base() string {
 	return filepath.Base(this.path)
 }
 
-func (this *AlsLogfile) BizName() string {
+func (this *AlsLogfile) CamalCaseName() string {
 	m := this.r.FindStringSubmatchMap(this.Base())
 	return CamelCase(m["bn"])
 }
