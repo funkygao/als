@@ -35,6 +35,13 @@ func TestAlsMessageFieldValue(t *testing.T) {
 	assert.Equal(t, "a.log", logfile.(string))
 }
 
+func TestLeafKeyName(t *testing.T) {
+	msg := prepareMsgForTest()
+	assert.Equal(t, "person", msg.leafKeyName("person"))
+	assert.Equal(t, "age", msg.leafKeyName("person.age"))
+	assert.Equal(t, "ip", msg.leafKeyName("_log_info.ip"))
+}
+
 func TestAlsMessageTime(t *testing.T) {
 	msg := prepareMsgForTest()
 	year, month, day := msg.Time().Date()
@@ -48,7 +55,6 @@ func TestAlsMessageTime(t *testing.T) {
 
 func TestAlsMessageJson(t *testing.T) {
 	msg := prepareMsgForTest()
-
 	json, err := msg.PayloadJson()
 	assert.Equal(t, nil, err)
 	uri, _ := json.Get("uri").String()

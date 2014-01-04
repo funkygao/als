@@ -4,6 +4,7 @@ import (
 	"fmt"
 	json "github.com/funkygao/go-simplejson"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -64,10 +65,13 @@ func (this *AlsMessage) PayloadJson() (data *json.Json, err error) {
 	}
 
 	data, err = json.NewJson([]byte(this.Payload))
+	if err != nil {
+		data = nil
+	}
 	this.payloadJson = data
 	this.decoded = true
 
-	return nil, err
+	return
 }
 
 // Payload field value by key name and key type
@@ -82,7 +86,7 @@ func (this *AlsMessage) FieldValue(keyName string, keyType string) (val interfac
 		val, err = this.payloadJson.DeepGet(keyName).String()
 	case KEY_TYPE_FLOAT:
 		val, err = this.payloadJson.DeepGet(keyName).Float64()
-	case KEY_TYPE_INT, KEY_TYPE_MONEY, KEY_TYPE_LEVEL, KEY_TYPE_RANGE:
+	case KEY_TYPE_INT, KEY_TYPE_MONEY, KEY_TYPE_RANGE:
 		val, err = this.payloadJson.DeepGet(keyName).Int()
 	case KEY_TYPE_BASEFILE:
 		var absoluteFilename string
@@ -93,6 +97,45 @@ func (this *AlsMessage) FieldValue(keyName string, keyType string) (val interfac
 		val = filepath.Base(absoluteFilename)
 	default:
 		panic("invalid key type: " + keyType)
+	}
+
+	return
+}
+
+// _loginfo.ip -> ip
+func (this *AlsMessage) leafKeyName(keyName string) string {
+	parts := strings.Split(keyName, ".")
+	return parts[len(parts)-1]
+}
+
+// TODO
+func (this *AlsMessage) ExtraFieldAndValue(keyName, keyType string, extraData interface{}) (key string, val interface{}) {
+	this.PayloadJson()
+
+	switch {
+	case this.leafKeyName(keyName) == KEY_TYPE_IP, keyType == KEY_NAME_IP:
+		ip, err := this.payloadJson.DeepGet(keyName).String()
+		if err != nil {
+			return
+		}
+
+		key = "cntry"
+		val = IpToCountry(ip)
+
+	case keyType == KEY_TYPE_MONEY:
+		amount, err := this.payloadJson.DeepGet(keyName).Int()
+		if err != nil {
+			return
+		}
+
+		currency := extraData.(string)
+
+		val = MoneyInUsdCents(currency, amount)
+		key = "usd"
+
+	case keyType == KEY_TYPE_RANGE:
+		key = "drange"
+
 	}
 
 	return
