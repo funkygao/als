@@ -17,7 +17,7 @@ type AlsMessage struct {
 	Payload string
 
 	// For routing matcher
-	Sink int16
+	Sink int
 
 	decoded     bool
 	payloadJson *json.Json
@@ -34,7 +34,7 @@ func (this *AlsMessage) Reset() {
 	this.Area = ""
 	this.Timestamp = 0
 	this.decoded = false
-	this.Sink = int16(0)
+	this.Sink = 0
 	this.Payload = ""
 	this.payloadJson = nil
 }
