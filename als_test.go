@@ -82,8 +82,8 @@ func TestGetAttr(t *testing.T) {
 }
 
 func TestMoneyInUsd(t *testing.T) {
-	usd, _ := MoneyInUsd("CAD", 1.2)
-	assert.Equal(t, 1.164, usd)
+	assert.Equal(t, 1445, MoneyInUsdCents("CAD", 1490))
+	assert.Equal(t, 12, MoneyInUsdCents("USD", 12))
 }
 
 func TestColorize(t *testing.T) {
