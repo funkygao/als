@@ -1,6 +1,7 @@
 package als
 
 import (
+	"errors"
 	"fmt"
 	json "github.com/funkygao/go-simplejson"
 	"path/filepath"
@@ -13,8 +14,10 @@ type AlsMessage struct {
 	// timestamp in UTC
 	Timestamp uint64
 	// Textual msg/json content
-	Payload  string
-	Priority int8
+	Payload string
+
+	// For routing matcher
+	Sink int16
 
 	decoded     bool
 	payloadJson *json.Json
@@ -30,8 +33,8 @@ func NewAlsMessage() *AlsMessage {
 func (this *AlsMessage) Reset() {
 	this.Area = ""
 	this.Timestamp = 0
-	this.Priority = int8(0)
 	this.decoded = false
+	this.Sink = int16(0)
 	this.Payload = ""
 	this.payloadJson = nil
 }
@@ -72,6 +75,35 @@ func (this *AlsMessage) PayloadJson() (data *json.Json, err error) {
 	this.decoded = true
 
 	return
+}
+
+func (this *AlsMessage) SetField(name string, value interface{}) (err error) {
+	_, err = this.PayloadJson()
+	if err != nil {
+		return
+	}
+
+	this.payloadJson.Set(name, value) // TODO DeepSet
+	return nil
+}
+
+func (this *AlsMessage) AddField(name string, value interface{}) (err error) {
+	_, err = this.PayloadJson()
+	if err != nil {
+		return
+	}
+
+	m, e := this.payloadJson.Map()
+	if e != nil {
+		return e
+	}
+
+	if _, present := m[name]; present {
+		return errors.New(name + " already exists in Message")
+	}
+
+	this.payloadJson.Set(name, value) // TODO DeepSet
+	return nil
 }
 
 // Payload field value by key name and key type
