@@ -77,6 +77,15 @@ func (this *AlsMessage) PayloadJson() (data *json.Json, err error) {
 	return
 }
 
+func (this *AlsMessage) DelField(name string) {
+	_, err := this.PayloadJson()
+	if err != nil {
+		return
+	}
+
+	this.payloadJson.Del(name)
+}
+
 func (this *AlsMessage) SetField(name string, value interface{}) (err error) {
 	_, err = this.PayloadJson()
 	if err != nil {

@@ -15,9 +15,7 @@ func prepareMsgForTest() *AlsMessage {
 
 func TestAlsMessageBasic(t *testing.T) {
 	msg := prepareMsgForTest()
-	msg.Priority = int8(5)
 	assert.Equal(t, "us", msg.Area)
-	assert.Equal(t, int8(5), msg.Priority)
 	assert.Equal(t, uint64(1387789257065/1000), msg.Timestamp)
 }
 
