@@ -140,39 +140,6 @@ func (this *AlsMessage) leafKeyName(keyName string) string {
 	return parts[len(parts)-1]
 }
 
-// TODO
-func (this *AlsMessage) ExtraFieldAndValue(keyName, keyType string, extraData interface{}) (key string, val interface{}) {
-	this.PayloadJson()
-
-	switch {
-	case this.leafKeyName(keyName) == KEY_TYPE_IP, keyType == KEY_NAME_IP:
-		ip, err := this.payloadJson.DeepGet(keyName).String()
-		if err != nil {
-			return
-		}
-
-		key = "cntry"
-		val = IpToCountry(ip)
-
-	case keyType == KEY_TYPE_MONEY:
-		amount, err := this.payloadJson.DeepGet(keyName).Int()
-		if err != nil {
-			return
-		}
-
-		currency := extraData.(string)
-
-		val = MoneyInUsdCents(currency, amount)
-		key = "usd"
-
-	case keyType == KEY_TYPE_RANGE:
-		key = "drange"
-
-	}
-
-	return
-}
-
 func (this *AlsMessage) MarshalPayload() ([]byte, error) {
 	js, err := this.PayloadJson()
 	if err != nil {
