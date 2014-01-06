@@ -12,6 +12,11 @@ func parseAlsLine(line string) (area string, ts uint64, msg string, err error) {
 		field_split_num = 3
 	)
 
+	if strings.TrimSpace(line) == "" {
+		err = errors.New("empty line")
+		return
+	}
+
 	fields := strings.SplitN(line, field_splitter, field_split_num)
 	if len(fields) != field_split_num {
 		err = errors.New("not enough fields: " + line)
