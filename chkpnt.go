@@ -2,6 +2,7 @@ package als
 
 import (
 	"encoding/gob"
+	"github.com/funkygao/pretty"
 	"os"
 	"sync"
 )
@@ -43,6 +44,11 @@ func (this *FileCheckpoint) Put(filename string) {
 	defer this.unlock()
 
 	this.Files[filename] = true
+}
+
+func (this *FileCheckpoint) PrettyPrint() {
+	this.Load()
+	pretty.Printf("%# v\n", this.Files)
 }
 
 func (this *FileCheckpoint) Dump() {
