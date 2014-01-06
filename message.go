@@ -49,6 +49,11 @@ func (this *AlsMessage) FromLine(line string) error {
 	this.Timestamp = timestamp
 	this.Payload = payload
 
+	_, err = this.PayloadJson()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
