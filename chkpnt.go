@@ -7,7 +7,7 @@ import (
 )
 
 type FileCheckpoint struct {
-	*sync.RWMutex
+	rwmutex *sync.RWMutex
 
 	Files    map[string]bool // capital so that gob can serialize this part
 	dumpfile string
@@ -15,16 +15,32 @@ type FileCheckpoint struct {
 
 func NewFileCheckpoint(dumpfile string) (this *FileCheckpoint) {
 	this = new(FileCheckpoint)
-	this.RWMutex = new(sync.RWMutex)
+	this.rwmutex = new(sync.RWMutex)
 	this.dumpfile = dumpfile
 	this.Files = make(map[string]bool)
 
 	return
 }
 
+func (this *FileCheckpoint) lock() {
+	this.rwmutex.Lock()
+}
+
+func (this *FileCheckpoint) unlock() {
+	this.rwmutex.Unlock()
+}
+
+func (this *FileCheckpoint) rlock() {
+	this.rwmutex.RLock()
+}
+
+func (this *FileCheckpoint) runlock() {
+	this.rwmutex.RUnlock()
+}
+
 func (this *FileCheckpoint) Put(filename string) {
-	this.Lock()
-	defer this.Unlock()
+	this.lock()
+	defer this.unlock()
 
 	this.Files[filename] = true
 }
@@ -56,8 +72,8 @@ func (this *FileCheckpoint) Load() error {
 }
 
 func (this *FileCheckpoint) Contains(filename string) bool {
-	this.RLock()
-	defer this.RUnlock()
+	this.rlock()
+	defer this.runlock()
 
 	_, found := this.Files[filename]
 	return found
