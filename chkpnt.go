@@ -48,7 +48,7 @@ func (this *FileCheckpoint) Put(filename string) {
 
 func (this *FileCheckpoint) PrettyPrint() {
 	this.Load()
-	pretty.Printf("%# v\n", this.Files)
+	pretty.Printf("% v\n", this.Files)
 }
 
 func (this *FileCheckpoint) Dump() {
