@@ -6,16 +6,19 @@ import (
 	"strings"
 )
 
+var (
+	logfileRegex     = NamedRegexp{regexp.MustCompile(`(?P<bn>.+)\.(\d+).\.log`)}
+	dateLogfileRegex = NamedRegexp{regexp.MustCompile(`(?P<bn>.+)_(\d+)_(.+)`)}
+)
+
 // in-flight: mongo_slow.0.log
 // history: mongo_slow_20140103060105_0
 type AlsLogfile struct {
 	path string // absolute path for a single file
-	r    NamedRegexp
 }
 
 func NewAlsLogfile() (this *AlsLogfile) {
 	this = new(AlsLogfile)
-	this.r = NamedRegexp{regexp.MustCompile(`(?P<bn>.+)\.(\d+).\.log`)}
 	return
 }
 
@@ -28,7 +31,12 @@ func (this *AlsLogfile) Base() string {
 }
 
 func (this *AlsLogfile) CamalCaseName() string {
-	m := this.r.FindStringSubmatchMap(this.Base())
+	m := logfileRegex.FindStringSubmatchMap(this.Base())
+	return CamelCase(m["bn"])
+}
+
+func (this *AlsLogfile) DateLogfileCamalCaseName() string {
+	m := dateLogfileRegex.FindStringSubmatchMap(this.Base())
 	return CamelCase(m["bn"])
 }
 

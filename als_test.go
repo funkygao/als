@@ -24,7 +24,7 @@ func TestLogfileMonth(t *testing.T) {
 	assert.Equal(t, "20131208", logfile.LogfileYearMonthDate())
 }
 
-func TestLogfileBizName(t *testing.T) {
+func TestLogfileCamalCaseName(t *testing.T) {
 	logfile := NewAlsLogfile()
 	logfile.SetPath("/var/bi_first_payment.10.log")
 	assert.Equal(t, "biFirstPayment", logfile.CamalCaseName())
@@ -34,6 +34,10 @@ func TestLogfileBizName(t *testing.T) {
 
 	logfile.SetPath("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")
 	assert.Equal(t, "", logfile.CamalCaseName())
+	assert.Equal(t, "session", logfile.DateLogfileCamalCaseName())
+
+	logfile.SetPath("/data2/als/click/check_click_20140101050105_1")
+	assert.Equal(t, "checkClick", logfile.DateLogfileCamalCaseName())
 }
 
 func TestIntsGroupLabel(t *testing.T) {
