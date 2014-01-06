@@ -2,6 +2,7 @@ package als
 
 import (
 	"encoding/gob"
+	"fmt"
 	"os"
 	"sync"
 )
@@ -47,8 +48,8 @@ func (this *FileCheckpoint) Put(filename string) {
 
 func (this *FileCheckpoint) PrettyPrint() {
 	this.Load()
-	for f, _ := range this.Files {
-		println(f)
+	for fn, _ := range this.Files {
+		fmt.Fprintln(os.Stdout, fn)
 	}
 }
 
