@@ -32,12 +32,11 @@ func TestLogfileCamalCaseName(t *testing.T) {
 	logfile.SetPath("/var/ffs.client.Error.11.log")
 	assert.Equal(t, "ffsClientError", logfile.CamalCaseName())
 
-	logfile.SetPath("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")
-	assert.Equal(t, "", logfile.CamalCaseName())
-	assert.Equal(t, "session", logfile.DateLogfileCamalCaseName())
+	logfile.SetDatePath("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")
+	assert.Equal(t, "session", logfile.CamalCaseName())
 
-	logfile.SetPath("/data2/als/click/check_click_20140101050105_1")
-	assert.Equal(t, "checkClick", logfile.DateLogfileCamalCaseName())
+	logfile.SetDatePath("/data2/als/click/check_click_20140101050105_1")
+	assert.Equal(t, "checkClick", logfile.CamalCaseName())
 }
 
 func TestIntsGroupLabel(t *testing.T) {

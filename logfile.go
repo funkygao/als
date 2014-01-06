@@ -14,11 +14,13 @@ var (
 // in-flight: mongo_slow.0.log
 // history: mongo_slow_20140103060105_0
 type AlsLogfile struct {
-	path string // absolute path for a single file
+	path        string // absolute path for a single file
+	endsWithLog bool
 }
 
 func NewAlsLogfile() (this *AlsLogfile) {
 	this = new(AlsLogfile)
+	this.endsWithLog = true
 	return
 }
 
@@ -26,17 +28,23 @@ func (this *AlsLogfile) SetPath(path string) {
 	this.path = path
 }
 
+func (this *AlsLogfile) SetDatePath(path string) {
+	this.SetPath(path)
+	this.endsWithLog = false
+}
+
 func (this *AlsLogfile) Base() string {
 	return filepath.Base(this.path)
 }
 
 func (this *AlsLogfile) CamalCaseName() string {
-	m := logfileRegex.FindStringSubmatchMap(this.Base())
-	return CamelCase(m["bn"])
-}
+	var m map[string]string
+	if this.endsWithLog {
+		m = logfileRegex.FindStringSubmatchMap(this.Base())
+	} else {
+		m = dateLogfileRegex.FindStringSubmatchMap(this.Base())
+	}
 
-func (this *AlsLogfile) DateLogfileCamalCaseName() string {
-	m := dateLogfileRegex.FindStringSubmatchMap(this.Base())
 	return CamelCase(m["bn"])
 }
 
