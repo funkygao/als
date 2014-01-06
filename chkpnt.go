@@ -46,6 +46,9 @@ func (this *FileCheckpoint) Put(filename string) {
 }
 
 func (this *FileCheckpoint) Dump() {
+	this.lock()
+	defer this.unlock()
+
 	file, err := os.OpenFile(this.dumpfile, os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
 		panic(err)
