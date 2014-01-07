@@ -41,7 +41,7 @@ func (this *AlsLogfile) Base() string {
 	return filepath.Base(this.path)
 }
 
-func (this *AlsLogfile) CamalCaseName() string {
+func (this *AlsLogfile) CamelCaseName() string {
 	md5Name := this.md5Name()
 	if name, present := camelNameCache[md5Name]; present {
 		return name
