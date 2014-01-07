@@ -12,6 +12,7 @@ import (
 var (
 	logfileRegex     = NamedRegexp{regexp.MustCompile(`(?P<bn>.+)\.(\d+).\.log`)}
 	dateLogfileRegex = NamedRegexp{regexp.MustCompile(`(?P<bn>.+)_(\d+)_(.+)`)}
+	camelNameCache   = make(map[string]string)
 )
 
 // in-flight: mongo_slow.0.log
@@ -41,6 +42,11 @@ func (this *AlsLogfile) Base() string {
 }
 
 func (this *AlsLogfile) CamalCaseName() string {
+	md5Name := this.md5Name()
+	if name, present := camelNameCache[md5Name]; present {
+		return name
+	}
+
 	var m map[string]string
 	if this.endsWithLog {
 		m = logfileRegex.FindStringSubmatchMap(this.Base())
@@ -48,7 +54,9 @@ func (this *AlsLogfile) CamalCaseName() string {
 		m = dateLogfileRegex.FindStringSubmatchMap(this.Base())
 	}
 
-	return CamelCase(m["bn"])
+	name := CamelCase(m["bn"])
+	camelNameCache[md5Name] = name
+	return name
 }
 
 func (this *AlsLogfile) md5Name() string {
