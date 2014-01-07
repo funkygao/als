@@ -120,6 +120,16 @@ func (this *AlsMessage) AddField(name string, value interface{}) (err error) {
 	return nil
 }
 
+func (this *AlsMessage) ValueOfKey(keyName string) (val interface{}, err error) {
+	_, err = this.PayloadJson()
+	if err != nil {
+		return
+	}
+
+	val = this.payloadJson.DeepGet(keyName)
+	return
+}
+
 // Payload field value by key name and key type
 func (this *AlsMessage) FieldValue(keyName string, keyType string) (val interface{}, err error) {
 	_, err = this.PayloadJson()
