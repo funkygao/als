@@ -1,7 +1,6 @@
 package als
 
 import (
-	"errors"
 	"strconv"
 	"strings"
 )
@@ -13,19 +12,19 @@ func parseAlsLine(line string) (area string, ts uint64, msg string, err error) {
 	)
 
 	if strings.TrimSpace(line) == "" {
-		err = errors.New("empty line")
+		err = ErrEmptyLine
 		return
 	}
 
 	fields := strings.SplitN(line, field_splitter, field_split_num)
 	if len(fields) != field_split_num {
-		err = errors.New("not enough fields: " + line)
+		err = ErrFieldNotEnough
 		return
 	}
 
 	area = fields[0]
 	if area == "" {
-		err = errors.New("empty area")
+		err = ErrEmptyArea
 		return
 	}
 
@@ -36,7 +35,7 @@ func parseAlsLine(line string) (area string, ts uint64, msg string, err error) {
 	if ts > 1283931748344 {
 		ts /= 1000
 	} else if ts < 1262275200 {
-		err = errors.New("invalid timestamp: " + fields[1])
+		err = ErrTimestampInvalid
 		return
 	}
 
