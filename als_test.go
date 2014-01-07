@@ -15,6 +15,12 @@ func TestLogfileTimeStr(t *testing.T) {
 	assert.Equal(t, "20131208230103", logfile.LogfileTimeStr())
 }
 
+func TestMd5Logfilename(t *testing.T) {
+	logfile := NewAlsLogfile()
+	logfile.SetPath("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")
+	assert.Equal(t, "424a1e8cb0b7cc67d3a657bcf4784b15", logfile.md5Name())
+}
+
 func TestLogfileMonth(t *testing.T) {
 	logfile := NewAlsLogfile()
 	logfile.SetPath("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")

@@ -1,6 +1,9 @@
 package als
 
 import (
+	"crypto/md5"
+	"fmt"
+	"io"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -46,6 +49,14 @@ func (this *AlsLogfile) CamalCaseName() string {
 	}
 
 	return CamelCase(m["bn"])
+}
+
+func (this *AlsLogfile) md5Name() (val string) {
+	m := md5.New()
+	io.WriteString(m, this.path)
+	val = fmt.Sprintf("%x", m.Sum(nil))
+
+	return
 }
 
 // Get time info from filename
