@@ -14,7 +14,8 @@ type AlsMessage struct {
 	// timestamp in UTC
 	Timestamp uint64
 	// Textual msg/json content
-	Payload string
+	Payload  string
+	Priority int
 
 	// For routing matcher
 	Sink int
@@ -35,6 +36,7 @@ func (this *AlsMessage) Reset() {
 	this.Timestamp = 0
 	this.decoded = false
 	this.Sink = 0
+	this.Priority = 0
 	this.Payload = ""
 	this.payloadJson = nil
 }
