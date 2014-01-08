@@ -7,18 +7,22 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 )
 
 var (
 	logfileRegex     = NamedRegexp{regexp.MustCompile(`(?P<bn>.+)\.(\d+)\.log`)}
 	dateLogfileRegex = NamedRegexp{regexp.MustCompile(`(?P<bn>.+)_(\d+)_(.+)`)}
-	camelNameCache   = make(map[string]string)
+
+	camelNameCache = make(map[string]string)
+	cacheRWMutex   = new(sync.RWMutex)
 )
 
 // in-flight: mongo_slow.0.log
 // history: mongo_slow_20140103060105_0
 type AlsLogfile struct {
-	path string // absolute path for a single file
+	path     string // absolute path for a single file
+	baseName string // to lessen CPU cycle
 }
 
 func NewAlsLogfile() (this *AlsLogfile) {
@@ -28,10 +32,11 @@ func NewAlsLogfile() (this *AlsLogfile) {
 
 func (this *AlsLogfile) SetPath(path string) {
 	this.path = path
+	this.baseName = filepath.Base(this.path)
 }
 
 func (this *AlsLogfile) Base() string {
-	return filepath.Base(this.path)
+	return this.baseName
 }
 
 func (this *AlsLogfile) MatchPrefix(prefix string) bool {
@@ -41,6 +46,8 @@ func (this *AlsLogfile) MatchPrefix(prefix string) bool {
 // FIXME  the ugly coding
 func (this *AlsLogfile) CamelCaseName() string {
 	md5Name := this.md5Name()
+	cacheRWMutex.RLock()
+	defer cacheRWMutex.RUnlock()
 	if name, present := camelNameCache[md5Name]; present {
 		return name
 	}
@@ -62,30 +69,4 @@ func (this *AlsLogfile) md5Name() string {
 	m := md5.New()
 	io.WriteString(m, this.path)
 	return hex.EncodeToString(m.Sum(nil))
-}
-
-// Get time info from filename
-func (this *AlsLogfile) LogfileTimeStr() string {
-	fields := strings.Split(filepath.Base(this.path), "_")
-	return fields[len(fields)-2]
-}
-
-func (this *AlsLogfile) LogfileMonth() string {
-	ts := this.LogfileTimeStr()
-	return ts[4:6]
-}
-
-func (this *AlsLogfile) LogfileYear() string {
-	ts := this.LogfileTimeStr()
-	return ts[:4]
-}
-
-func (this *AlsLogfile) LogfileYearMonth() string {
-	ts := this.LogfileTimeStr()
-	return ts[:6]
-}
-
-func (this *AlsLogfile) LogfileYearMonthDate() string {
-	ts := this.LogfileTimeStr()
-	return ts[:8]
 }
