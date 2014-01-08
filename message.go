@@ -84,6 +84,11 @@ func (this *AlsMessage) PayloadJson() (data *json.Json, err error) {
 	return
 }
 
+func (this *AlsMessage) FieldContains(name string, substr string) bool {
+	s, _ := this.FieldValue(name, KEY_TYPE_STRING)
+	return strings.Contains(s.(string), substr)
+}
+
 func (this *AlsMessage) DelField(name string) {
 	_, err := this.PayloadJson()
 	if err != nil {
