@@ -5,10 +5,14 @@ import (
 	"testing"
 )
 
-func TestMd5Logfilename(t *testing.T) {
+func TestBaseName(t *testing.T) {
 	logfile := NewAlsLogfile()
 	logfile.SetPath("/mnt/funplus/logs/fp_rstory/history/session_20131208230103_1")
-	assert.Equal(t, "424a1e8cb0b7cc67d3a657bcf4784b15", logfile.md5Name())
+	assert.Equal(t, "session_20131208230103_1", logfile.Base())
+	logfile.SetPath("session_20131208230103_1")
+	assert.Equal(t, "session_20131208230103_1", logfile.Base())
+	logfile.SetPath("var/a.log")
+	assert.Equal(t, "a.log", logfile.Base())
 }
 
 func TestLogfileCamalCaseName(t *testing.T) {
@@ -30,4 +34,30 @@ func TestLogfileCamalCaseName(t *testing.T) {
 
 	logfile.SetPath("/var/a/a.4.log")
 	assert.Equal(t, "a", logfile.CamelCaseName())
+}
+
+func TestMatchPrefix(t *testing.T) {
+	l := NewAlsLogfile()
+	l.SetPath("/var////asdfasfa.log")
+	assert.Equal(t, true, l.MatchPrefix("asd"))
+}
+
+func BenchmarkLogfileExt(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		l := NewAlsLogfile()
+		l.SetPath("/var//funplus/logs/fp_rstory/history/session_mm_20131208230103_1")
+		l.Ext()
+		l.SetPath("/var/bi_first_payment.10.log")
+		l.Ext()
+	}
+}
+
+func BenchmarkCamelCaseName(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		l := NewAlsLogfile()
+		l.SetPath("/var//funplus/logs/fp_rstory/history/session_mm_20131208230103_1")
+		l.CamelCaseName()
+		l.SetPath("/var/bi_first_payment.10.log")
+		l.CamelCaseName()
+	}
 }
