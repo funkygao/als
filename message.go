@@ -46,6 +46,7 @@ func (this *AlsMessage) FromLine(line string) error {
 	this.Area = area
 	this.Timestamp = timestamp
 	this.Payload = payload
+	this.decoded = false
 
 	_, err = this.PayloadJson()
 	if err != nil {
