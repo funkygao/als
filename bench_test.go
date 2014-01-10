@@ -71,3 +71,11 @@ func BenchmarkAlsMessageFieldValue(b *testing.B) {
 		msg.FieldValue("_log_info.uid", KEY_TYPE_INT)
 	}
 }
+
+func BenchmarkAlsMessageSetField(b *testing.B) {
+	msg := NewAlsMessage()
+	msg.FromEmptyJson()
+	for i := 0; i < b.N; i++ {
+		msg.SetField("foo", "bar")
+	}
+}

@@ -53,9 +53,13 @@ func (this *AlsMessage) FromLine(line string) error {
 	this.Payload = payload
 	this.decoded = false
 
-	_, err = this.PayloadJson()
+	var js *json.Json
+	js, err = this.PayloadJson()
 	if err != nil {
 		return err
+	}
+	if js == nil {
+		return ErrEmptyJsonPayload
 	}
 
 	return nil
