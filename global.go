@@ -15,8 +15,6 @@ const (
 
 	KEY_NAME_CURRENCY = "currency"
 	KEY_NAME_IP       = "ip"
-
-	EMPTY_JSON = `{}`
 )
 
 var (

@@ -62,3 +62,13 @@ func TestAlsMessageJson(t *testing.T) {
 	ip, _ := loginfo.Get("ip").String()
 	assert.Equal(t, "209.202.60.244", ip)
 }
+
+func TestFromEmptyJson(t *testing.T) {
+	msg := NewAlsMessage()
+	msg.FromEmptyJson()
+	t.Logf("%#v\n", *msg.payloadJson)
+	msg.SetField("foo", "bar")
+	t.Logf("%#v\n", *msg.payloadJson)
+	val, _ := msg.FieldValue("foo", KEY_TYPE_STRING)
+	assert.Equal(t, "bar", val)
+}

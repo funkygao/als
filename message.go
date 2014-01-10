@@ -37,6 +37,11 @@ func (this *AlsMessage) Reset() {
 	this.payloadJson = nil
 }
 
+// Timestamp will be partitially lost if in ms
+func (this *AlsMessage) RawLine() string {
+	return fmt.Sprintf("%s,%d,%s", this.Area, this.Timestamp, this.Payload)
+}
+
 func (this *AlsMessage) FromLine(line string) error {
 	area, timestamp, payload, err := parseAlsLine(line)
 	if err != nil {
@@ -56,9 +61,9 @@ func (this *AlsMessage) FromLine(line string) error {
 	return nil
 }
 
-// Timestamp will be partitially lost if in ms
-func (this *AlsMessage) RawLine() string {
-	return fmt.Sprintf("%s,%d,%s", this.Area, this.Timestamp, this.Payload)
+func (this *AlsMessage) FromEmptyJson() {
+	this.payloadJson, _ = json.NewJson([]byte(`{}`))
+	this.decoded = true
 }
 
 // TODO
