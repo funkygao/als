@@ -41,23 +41,3 @@ func TestMatchPrefix(t *testing.T) {
 	l.SetPath("/var////asdfasfa.log")
 	assert.Equal(t, true, l.MatchPrefix("asd"))
 }
-
-func BenchmarkLogfileExt(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		l := NewAlsLogfile()
-		l.SetPath("/var//funplus/logs/fp_rstory/history/session_mm_20131208230103_1")
-		l.Ext()
-		l.SetPath("/var/bi_first_payment.10.log")
-		l.Ext()
-	}
-}
-
-func BenchmarkCamelCaseName(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		l := NewAlsLogfile()
-		l.SetPath("/var//funplus/logs/fp_rstory/history/session_mm_20131208230103_1")
-		l.CamelCaseName()
-		l.SetPath("/var/bi_first_payment.10.log")
-		l.CamelCaseName()
-	}
-}
