@@ -29,9 +29,11 @@ func BenchmarkCamelCaseName(b *testing.B) {
 }
 
 func BenchmarkParseAlsLine(b *testing.B) {
+	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		parseAlsLine(jsonLineForTest)
 	}
+	b.SetBytes(int64(len([]byte(jsonLineForTest))))
 }
 
 func BenchmarkAlsMessageMarshalPayload(b *testing.B) {
@@ -39,14 +41,33 @@ func BenchmarkAlsMessageMarshalPayload(b *testing.B) {
 	if err := msg.FromLine(jsonLineForTest); err != nil {
 		panic(err)
 	}
+
 	for i := 0; i < b.N; i++ {
 		msg.MarshalPayload()
 	}
+	b.SetBytes(int64(len([]byte(jsonLineForTest))))
 }
 
-func BenchmarkAlsMessageJson(b *testing.B) {
+func BenchmarkAlsMessageFromEmptyJson(b *testing.B) {
+	msg := NewAlsMessage()
+	for i := 0; i < b.N; i++ {
+		msg.FromEmptyJson()
+	}
+}
+
+func BenchmarkAlsMessageFromLine(b *testing.B) {
+	b.ReportAllocs()
 	msg := NewAlsMessage()
 	for i := 0; i < b.N; i++ {
 		msg.FromLine(jsonLineForTest)
+	}
+	b.SetBytes(int64(len([]byte(jsonLineForTest))))
+}
+
+func BenchmarkAlsMessageFieldValue(b *testing.B) {
+	msg := NewAlsMessage()
+	msg.FromLine(jsonLineForTest)
+	for i := 0; i < b.N; i++ {
+		msg.FieldValue("_log_info.uid", KEY_TYPE_INT)
 	}
 }
