@@ -54,13 +54,9 @@ func (this *AlsMessage) FromLine(line string) error {
 	this.Payload = payload
 	this.decoded = false
 
-	var js *json.Json
-	js, err = this.PayloadJson()
+	_, err = this.jsonize()
 	if err != nil {
 		return err
-	}
-	if js == nil {
-		return ErrEmptyJsonPayload
 	}
 
 	return nil
@@ -76,7 +72,7 @@ func (this *AlsMessage) FromBytes(bytes []byte) error {
 	return nil
 }
 
-func (this *AlsMessage) PayloadJson() (data *json.Json, err error) {
+func (this *AlsMessage) jsonize() (data *json.Json, err error) {
 	if this.decoded {
 		return this.payloadJson, nil
 	}
@@ -84,7 +80,9 @@ func (this *AlsMessage) PayloadJson() (data *json.Json, err error) {
 	data, err = json.NewJson([]byte(this.Payload))
 	if err != nil {
 		data = nil
+		return
 	}
+
 	this.payloadJson = data
 	this.decoded = true
 
@@ -97,7 +95,7 @@ func (this *AlsMessage) FieldContains(name string, substr string) bool {
 }
 
 func (this *AlsMessage) DelField(name string) {
-	_, err := this.PayloadJson()
+	_, err := this.jsonize()
 	if err != nil {
 		return
 	}
@@ -106,7 +104,7 @@ func (this *AlsMessage) DelField(name string) {
 }
 
 func (this *AlsMessage) SetField(name string, value interface{}) (err error) {
-	_, err = this.PayloadJson()
+	_, err = this.jsonize()
 	if err != nil {
 		return
 	}
@@ -116,7 +114,7 @@ func (this *AlsMessage) SetField(name string, value interface{}) (err error) {
 }
 
 func (this *AlsMessage) AddField(name string, value interface{}) (err error) {
-	_, err = this.PayloadJson()
+	_, err = this.jsonize()
 	if err != nil {
 		return
 	}
@@ -135,7 +133,7 @@ func (this *AlsMessage) AddField(name string, value interface{}) (err error) {
 }
 
 func (this *AlsMessage) ValueOfKey(keyName string) (val interface{}, err error) {
-	_, err = this.PayloadJson()
+	_, err = this.jsonize()
 	if err != nil {
 		return
 	}
@@ -165,7 +163,7 @@ func (this *AlsMessage) NormalizedValueOfKey(keyName string) (val interface{}, e
 
 // Payload field value by key name and key type
 func (this *AlsMessage) FieldValue(keyName string, keyType string) (val interface{}, err error) {
-	_, err = this.PayloadJson()
+	_, err = this.jsonize()
 	if err != nil {
 		return
 	}
@@ -198,7 +196,7 @@ func (this *AlsMessage) leafKeyName(keyName string) string {
 }
 
 func (this *AlsMessage) MarshalPayload() ([]byte, error) {
-	js, err := this.PayloadJson()
+	js, err := this.jsonize()
 	if err != nil {
 		return nil, err
 	}

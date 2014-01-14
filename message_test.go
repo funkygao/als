@@ -53,7 +53,7 @@ func TestAlsMessageTime(t *testing.T) {
 
 func TestAlsMessageJson(t *testing.T) {
 	msg := prepareMsgForTest()
-	json, err := msg.PayloadJson()
+	json, err := msg.jsonize()
 	assert.Equal(t, nil, err)
 	uri, _ := json.Get("uri").String()
 	assert.Equal(t, "/?fb_source=canvas_bookmark", uri)
