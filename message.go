@@ -77,6 +77,11 @@ func (this *AlsMessage) jsonize() (data *json.Json, err error) {
 		return this.payloadJson, nil
 	}
 
+	if this.Payload == "" {
+		this.FromEmptyJson()
+		return
+	}
+
 	data, err = json.NewJson([]byte(this.Payload))
 	if err != nil {
 		data = nil
