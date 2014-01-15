@@ -43,6 +43,7 @@ func (this *AlsMessage) RawLine() string {
 	return fmt.Sprintf("%s,%d,%s", this.Area, this.Timestamp, this.Payload)
 }
 
+// 26636 ns/op
 func (this *AlsMessage) FromLine(line string) error {
 	area, timestamp, payload, err := parseAlsLine(line)
 	if err != nil {
@@ -62,6 +63,7 @@ func (this *AlsMessage) FromLine(line string) error {
 	return nil
 }
 
+// 1534 ns/op
 func (this *AlsMessage) FromEmptyJson() {
 	this.payloadJson, _ = json.NewJson([]byte(`{}`))
 	this.decoded = true
@@ -70,6 +72,20 @@ func (this *AlsMessage) FromEmptyJson() {
 // TODO
 func (this *AlsMessage) FromBytes(bytes []byte) error {
 	return nil
+}
+
+// 44534 ns/op
+func (this *AlsMessage) Clone() (that *AlsMessage) {
+	js, _ := this.jsonize()
+	that = NewAlsMessage()
+	that.Area = this.Area
+	that.Timestamp = this.Timestamp
+	that.Payload = this.Payload
+	that.Priority = this.Priority
+	body, _ := js.MarshalJSON()
+	that.payloadJson, _ = json.NewJson(body)
+	that.decoded = true
+	return
 }
 
 func (this *AlsMessage) jsonize() (data *json.Json, err error) {

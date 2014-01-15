@@ -18,6 +18,24 @@ func BenchmarkLogfileExt(b *testing.B) {
 	}
 }
 
+func BenchmarkMessageClone(b *testing.B) {
+	msg := NewAlsMessage()
+	if err := msg.FromLine(jsonLineForTest); err != nil {
+		panic(err)
+	}
+
+	var marshaled []byte
+	for i := 0; i < b.N; i++ {
+		nm := msg.Clone()
+		b.StopTimer()
+		b.Logf("%#v", nm)
+		marshaled, _ = nm.MarshalPayload()
+		b.Logf("%v", string(marshaled))
+		b.StartTimer()
+	}
+	b.SetBytes(int64(len([]byte(jsonLineForTest))))
+}
+
 func BenchmarkCamelCaseName(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		l := NewAlsLogfile()
