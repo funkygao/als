@@ -44,8 +44,9 @@ func parseAlsLine(line string) (area string, ts uint64, msg string, err error) {
 		// 2010-01-01 00:00:00 +0800 CST
 		err = ErrTimestampInvalid
 		return
-	} else if math.Abs(float64(ts-baseUTC)) > 21600 {
-		// 6 hours gap? should correct it
+	} else if math.Abs(float64(ts-baseUTC)) > 5184000 {
+		// 60 days gap? we never analyze data 1 month ago
+		// should correct it
 		ts = uint64(time.Now().UTC().Unix())
 	}
 
