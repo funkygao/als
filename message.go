@@ -88,6 +88,15 @@ func (this *AlsMessage) Clone() (that *AlsMessage) {
 	return
 }
 
+func (this *AlsMessage) Map() (map[string]interface{}, error) {
+	js, err := this.jsonize()
+	if err != nil {
+		return nil, err
+	}
+
+	return js.Map()
+}
+
 func (this *AlsMessage) jsonize() (data *json.Json, err error) {
 	if this.decoded {
 		return this.payloadJson, nil
