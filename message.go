@@ -97,6 +97,10 @@ func (this *AlsMessage) Map() (map[string]interface{}, error) {
 	return js.Map()
 }
 
+func (this *AlsMessage) Len() int {
+	return len(this.Payload)
+}
+
 func (this *AlsMessage) jsonize() (data *json.Json, err error) {
 	if this.decoded {
 		return this.payloadJson, nil
