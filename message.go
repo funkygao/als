@@ -97,7 +97,7 @@ func (this *AlsMessage) Map() (map[string]interface{}, error) {
 	return js.Map()
 }
 
-func (this *AlsMessage) Len() int {
+func (this *AlsMessage) Size() int {
 	return len(this.Payload)
 }
 
