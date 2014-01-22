@@ -18,6 +18,7 @@ type AlsMessage struct {
 	Payload  string
 	Priority int
 
+	size        int // in byte
 	decoded     bool
 	payloadJson *json.Json
 }
@@ -34,6 +35,7 @@ func (this *AlsMessage) Reset() {
 	this.Timestamp = 0
 	this.decoded = false
 	this.Priority = 0
+	this.size = 0
 	this.Payload = ""
 	this.payloadJson = nil
 }
@@ -50,6 +52,7 @@ func (this *AlsMessage) FromLine(line string) error {
 		return err
 	}
 
+	this.size = len(line)
 	this.Area = area
 	this.Timestamp = timestamp
 	this.Payload = payload
@@ -98,7 +101,7 @@ func (this *AlsMessage) Map() (map[string]interface{}, error) {
 }
 
 func (this *AlsMessage) Size() int {
-	return len(this.Payload)
+	return this.size
 }
 
 func (this *AlsMessage) jsonize() (data *json.Json, err error) {
