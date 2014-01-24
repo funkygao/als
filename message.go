@@ -101,6 +101,10 @@ func (this *AlsMessage) Map() (map[string]interface{}, error) {
 	return js.Map()
 }
 
+func (this *AlsMessage) SetSize(size int) {
+	this.size = size
+}
+
 func (this *AlsMessage) Size() int {
 	return this.size
 }
