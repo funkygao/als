@@ -70,6 +70,7 @@ func (this *AlsMessage) FromLine(line string) error {
 func (this *AlsMessage) FromEmptyJson() {
 	this.payloadJson, _ = json.NewJson([]byte(`{}`))
 	this.decoded = true
+	this.size = 2
 }
 
 // TODO
