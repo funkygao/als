@@ -17,7 +17,7 @@ func parseAlsLine(line string) (area string, ts uint64, msg string, err error) {
 		field_split_num = 3
 	)
 
-	if strings.TrimSpace(line) == "" {
+	if line == "" {
 		err = ErrEmptyLine
 		return
 	}
