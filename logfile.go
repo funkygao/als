@@ -11,8 +11,8 @@ var (
 	logfileRegex     = regexp.MustCompile(`(.+)\.(\d+)\.log`)
 	dateLogfileRegex = regexp.MustCompile(`(.+)_(\d+)_(.+)`)
 
-	camelNameCache = make(map[string]string)
-	cacheRWMutex   = new(sync.RWMutex)
+	camelNameCache        = make(map[string]string)
+	camelNameCacheRWMutex = new(sync.RWMutex)
 )
 
 // in-flight: mongo_slow.0.log
@@ -45,12 +45,12 @@ func (this *AlsLogfile) MatchPrefix(prefix string) bool {
 }
 
 func (this *AlsLogfile) CamelCaseName() string {
-	cacheRWMutex.RLock()
+	camelNameCacheRWMutex.RLock()
 	if name, present := camelNameCache[this.Base()]; present {
-		cacheRWMutex.RUnlock()
+		camelNameCacheRWMutex.RUnlock()
 		return name
 	}
-	cacheRWMutex.RUnlock()
+	camelNameCacheRWMutex.RUnlock()
 
 	var name string
 	if this.Ext() == ".log" {
@@ -60,8 +60,8 @@ func (this *AlsLogfile) CamelCaseName() string {
 	}
 
 	name = CamelCase(name)
-	cacheRWMutex.Lock()
+	camelNameCacheRWMutex.Lock()
 	camelNameCache[this.Base()] = name
-	cacheRWMutex.Unlock()
+	camelNameCacheRWMutex.Unlock()
 	return name
 }
