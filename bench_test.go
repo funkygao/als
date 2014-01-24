@@ -78,6 +78,7 @@ func BenchmarkAlsMessageFromLine(b *testing.B) {
 }
 
 func BenchmarkAlsMessageFieldValue(b *testing.B) {
+	b.ReportAllocs()
 	msg := NewAlsMessage()
 	msg.FromLine(jsonLineForTest)
 	for i := 0; i < b.N; i++ {
@@ -86,6 +87,7 @@ func BenchmarkAlsMessageFieldValue(b *testing.B) {
 }
 
 func BenchmarkAlsMessageSetField(b *testing.B) {
+	b.ReportAllocs()
 	msg := NewAlsMessage()
 	msg.FromEmptyJson()
 	for i := 0; i < b.N; i++ {
@@ -99,14 +101,8 @@ func BenchmarkMessageClone(b *testing.B) {
 		panic(err)
 	}
 
-	var marshaled []byte
 	for i := 0; i < b.N; i++ {
-		nm := msg.Clone()
-		b.StopTimer()
-		b.Logf("%#v", nm)
-		marshaled, _ = nm.MarshalPayload()
-		b.Logf("%v", string(marshaled))
-		b.StartTimer()
+		msg.Clone()
 	}
 	b.SetBytes(int64(len([]byte(jsonLineForTest))))
 }
