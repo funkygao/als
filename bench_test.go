@@ -75,7 +75,7 @@ func BenchmarkCamelCaseName(b *testing.B) {
 	}
 }
 
-func BenchmarkJsonize(b *testing.B) {
+func BenchmarkJsonizeByString(b *testing.B) {
 	msg := NewAlsMessage()
 	_, _, msg.Payload, _ = parseAlsLine(jsonLineForTest)
 	for i := 0; i < b.N; i++ {
@@ -84,7 +84,7 @@ func BenchmarkJsonize(b *testing.B) {
 	}
 }
 
-func BenchmarkJsonizeBytes(b *testing.B) {
+func BenchmarkJsonizeByBytes(b *testing.B) {
 	_, _, payload, _ := parseAlsLine(jsonLineForTest)
 	bp := []byte(payload)
 	for i := 0; i < b.N; i++ {
