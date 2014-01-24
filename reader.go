@@ -41,6 +41,7 @@ func (this *alsReader) Open() (err error) {
 	return
 }
 
+// Not including the end-of-line bytes
 func (this *alsReader) ReadLine() ([]byte, error) {
 	line, isPrefix, err := this.reader.ReadLine()
 	if !isPrefix {
