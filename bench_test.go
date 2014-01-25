@@ -165,3 +165,15 @@ func BenchmarkMessageClone(b *testing.B) {
 	}
 	b.SetBytes(int64(len([]byte(jsonLineForTest))))
 }
+
+func BenchmarkMessageQuickClone(b *testing.B) {
+	msg := NewAlsMessage()
+	if err := msg.FromLine(jsonLineForTest); err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < b.N; i++ {
+		msg.QuickClone()
+	}
+	b.SetBytes(int64(len([]byte(jsonLineForTest))))
+}
