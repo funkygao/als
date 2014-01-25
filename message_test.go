@@ -72,3 +72,36 @@ func TestFromEmptyJson(t *testing.T) {
 	val, _ := msg.FieldValue("foo", KEY_TYPE_STRING)
 	assert.Equal(t, "bar", val)
 }
+
+func TestAlsMessageSetField(t *testing.T) {
+	msg := prepareMsgForTest()
+	uri, _ := msg.FieldValue("uri", KEY_TYPE_STRING)
+	assert.Equal(t, "/?fb_source=canvas_bookmark", uri)
+
+	// shallow set
+	msg.SetField("uri", "/facebook")
+	uri, _ = msg.FieldValue("uri", KEY_TYPE_STRING)
+	assert.Equal(t, "/facebook", uri)
+
+	// deep set doesn't work
+	ip, _ := msg.FieldValue("_log_info.ip", KEY_TYPE_IP)
+	assert.Equal(t, "209.202.60.244", ip)
+	msg.SetField("_log_info.ip", "8.9.10.11")
+	ip, _ = msg.FieldValue("_log_info.ip", KEY_TYPE_IP)
+	assert.Equal(t, "209.202.60.244", ip)
+}
+
+func TestAlsMessageQuickClone(t *testing.T) {
+	msg := prepareMsgForTest()
+	cloned := msg.QuickClone()
+	if cloned == msg {
+		t.Error("clone failed")
+	}
+
+	msg.SetField("uri", "/facebook")
+	uri, _ := msg.FieldValue("uri", KEY_TYPE_STRING)
+	assert.Equal(t, "/facebook", uri)
+
+	uriCloned, _ := cloned.FieldValue("uri", KEY_TYPE_IP)
+	assert.Equal(t, "/?fb_source=canvas_bookmark", uriCloned.(string))
+}
