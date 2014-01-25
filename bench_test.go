@@ -12,6 +12,13 @@ const (
 	jsonLineForTest = `us,1389326456474,{"uri":"\/?fb_source=notification&request_ids=629862167081523%2C231759870340420%2C597190080352387%2C640624999328961%2C235464713291862%2C753053901389297%2C790469374302126%2C192819610918125%2C1409213372656992%2C1395677210684824%2C219547141565670%2C445351695593355%2C353291448144469%2C374894915987858%2C1405041129742942%2C1386152901642951%2C1444273795788958%2C268848269934670&ref=notif&app_request_type=user_to_user&notif_t=app_request","_log_info":{"uid":10304512,"snsid":"100006490632784","level":39,"gender":"male","ab":{"pay":"a","quest":"a"},"payment_cash":13,"script_id":9524283412,"serial":1,"uri":"\/","host":"172.31.7.194","ip":"81.65.52.251","callee":"POST+\/+44eae87","sid":null,"elapsed":0.014667987823486}}`
 )
 
+func BenchmarkTypeAssertion(b *testing.B) {
+	var val interface{} = 3
+	for i := 0; i < b.N; i++ {
+		_ = val.(int)
+	}
+}
+
 func BenchmarkByteStringConvert(b *testing.B) {
 	b.ReportAllocs()
 	x := []byte(jsonLineForTest)
