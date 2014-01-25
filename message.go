@@ -78,9 +78,22 @@ func (this *AlsMessage) FromBytes(bytes []byte) error {
 	return nil
 }
 
+func (this *AlsMessage) IsNilJson() bool {
+	if this.Payload == "" {
+		return true
+	}
+
+	js, _ := this.jsonize()
+	return js.IsNil()
+}
+
 // 44534 ns/op
 func (this *AlsMessage) Clone() (that *AlsMessage) {
 	js, _ := this.jsonize()
+	if js.IsNil() {
+		return nil
+	}
+
 	that = NewAlsMessage()
 	that.Area = this.Area
 	that.Timestamp = this.Timestamp
@@ -89,6 +102,28 @@ func (this *AlsMessage) Clone() (that *AlsMessage) {
 	body, _ := js.MarshalJSON()
 	that.payloadJson, _ = json.NewJson(body)
 	that.decoded = true
+	return
+}
+
+// 2775 ns/op
+func (this *AlsMessage) QuickClone() (that *AlsMessage) {
+	that = NewAlsMessage()
+	that.FromEmptyJson()
+
+	that.Area = this.Area
+	that.Timestamp = this.Timestamp
+	that.Payload = this.Payload
+	that.Priority = this.Priority
+
+	m, err := this.Map()
+	if err != nil {
+		return nil
+	}
+
+	for k, v := range m {
+		that.SetField(k, v)
+	}
+
 	return
 }
 
@@ -145,6 +180,7 @@ func (this *AlsMessage) DelField(name string) {
 	this.payloadJson.Del(name)
 }
 
+// Does not work for _log_info.ip like deep set
 func (this *AlsMessage) SetField(name string, value interface{}) (err error) {
 	_, err = this.jsonize()
 	if err != nil {
