@@ -104,4 +104,7 @@ func TestAlsMessageQuickClone(t *testing.T) {
 
 	uriCloned, _ := cloned.FieldValue("uri", KEY_TYPE_IP)
 	assert.Equal(t, "/?fb_source=canvas_bookmark", uriCloned.(string))
+
+	ip, _ := cloned.FieldValue("_log_info.ip", KEY_TYPE_IP)
+	assert.Equal(t, "209.202.60.244", ip.(string))
 }
