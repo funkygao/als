@@ -27,6 +27,10 @@ func NewAlsLogfile() (this *AlsLogfile) {
 	return
 }
 
+func (this *AlsLogfile) Path() string {
+	return this.path
+}
+
 func (this *AlsLogfile) SetPath(path string) {
 	this.path = path
 	this.baseName = filepath.Base(this.path)
