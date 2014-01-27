@@ -146,6 +146,10 @@ func (this *AlsMessage) Size() int {
 
 func (this *AlsMessage) jsonize() (data *json.Json, err error) {
 	if this.decoded {
+		if this.payloadJson.IsNil() {
+			return this.payloadJson, ErrEmptyJsonPayload
+		}
+
 		return this.payloadJson, nil
 	}
 
