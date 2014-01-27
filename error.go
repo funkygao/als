@@ -10,4 +10,5 @@ var (
 	ErrEmptyArea        = errors.New("empty area")
 	ErrFieldNotEnough   = errors.New("not 3 fields")
 	ErrEmptyJsonPayload = errors.New("empty payload json")
+	ErrUnkownType       = errors.New("unkown type")
 )

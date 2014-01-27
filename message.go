@@ -236,7 +236,7 @@ func (this *AlsMessage) NormalizedValueOfKey(keyName string) (val interface{}, e
 		return v.Float(), nil
 	}
 
-	return nil, errors.New("unkown type")
+	return nil, ErrUnkownType
 }
 
 // Payload field value by key name and key type
@@ -246,16 +246,22 @@ func (this *AlsMessage) FieldValue(keyName string, keyType string) (val interfac
 		return
 	}
 
+	jval := this.payloadJson.DeepGet(keyName)
+	if jval.IsNil() {
+		err = ErrEmptyJsonPayload
+		return
+	}
+
 	switch keyType {
 	case KEY_TYPE_STRING, KEY_TYPE_IP:
-		val, err = this.payloadJson.DeepGet(keyName).String()
+		val, err = jval.String()
 	case KEY_TYPE_FLOAT:
-		val, err = this.payloadJson.DeepGet(keyName).Float64()
+		val, err = jval.Float64()
 	case KEY_TYPE_INT, KEY_TYPE_MONEY, KEY_TYPE_RANGE:
-		val, err = this.payloadJson.DeepGet(keyName).Int()
+		val, err = jval.Int()
 	case KEY_TYPE_BASEFILE:
 		var absoluteFilename string
-		absoluteFilename, err = this.payloadJson.DeepGet(keyName).String()
+		absoluteFilename, err = jval.String()
 		if err != nil {
 			return
 		}
