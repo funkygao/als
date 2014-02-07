@@ -155,7 +155,7 @@ func (this *AlsMessage) jsonize() (data *json.Json, err error) {
 
 	if this.Payload == "" {
 		this.FromEmptyJson()
-		return
+		return this.payloadJson, nil
 	}
 
 	data, err = json.NewJson([]byte(this.Payload))

@@ -108,3 +108,10 @@ func TestAlsMessageQuickClone(t *testing.T) {
 	ip, _ := cloned.FieldValue("_log_info.ip", KEY_TYPE_IP)
 	assert.Equal(t, "209.202.60.244", ip.(string))
 }
+
+func TestAlsMessageEmptyFieldValue(t *testing.T) {
+	msg := NewAlsMessage()
+	msg.FieldValue("ip.ip.ip", KEY_NAME_IP)
+	msg.Reset()
+	msg.FieldValue("ip", KEY_NAME_IP)
+}
