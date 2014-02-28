@@ -13,6 +13,13 @@ func prepareMsgForTest() *AlsMessage {
 	return msg
 }
 
+func TestInvliadLogEvent(t *testing.T) {
+	line := `spil,1393553053280,"\/Sysy64\/friends?fields=id,installed | Invalid OAuth access token signature. | run time : 0.51709413528442"`
+	msg := NewAlsMessage()
+	err := msg.FromLine(line)
+	assert.Equal(t, ErrNotJsonPayload, err)
+}
+
 func TestAlsMessageBasic(t *testing.T) {
 	msg := prepareMsgForTest()
 	assert.Equal(t, "us", msg.Area)

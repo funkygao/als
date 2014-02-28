@@ -158,6 +158,11 @@ func (this *AlsMessage) jsonize() (data *json.Json, err error) {
 		return this.payloadJson, nil
 	}
 
+	if !strings.HasPrefix(this.Payload, "{") ||
+		!strings.HasSuffix(this.Payload, "}") {
+		return nil, ErrNotJsonPayload
+	}
+
 	data, err = json.NewJson([]byte(this.Payload))
 	if err != nil {
 		data = nil
